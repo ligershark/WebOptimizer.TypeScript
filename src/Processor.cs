@@ -72,7 +72,11 @@ namespace WebOptimizer.TypeScript
                 {
                     try
                     {
-                        Directory.Delete(WorkingDirectory, true);
+                        if (Directory.Exists(WorkingDirectory))
+                        {
+                            Directory.Delete(WorkingDirectory, true);
+                        }
+
                         var assembly = GetType().Assembly;
 
                         using (var resourceStream = assembly.GetManifestResourceStream("WebOptimizer.TypeScript.node_files.zip"))
