@@ -1,5 +1,5 @@
 image: Visual Studio 2017
-version: 1.0.{build}
+version: 2.5.{build}
 
 install:
    # .NET Core SDK binaries
@@ -14,7 +14,7 @@ install:
 build_script:
   - build\build.cmd
   - dotnet restore -v quiet
-  - ps: dotnet build /p:configuration=Release /p:Version=2.5.$($env:appveyor_build_number)-beta
+  - ps: dotnet build /p:configuration=Release /p:Version=$($env:appveyor_build_version)-beta
 
 test_script:
   - dotnet test test/WebOptimizer.TypeScript.Test.csproj
