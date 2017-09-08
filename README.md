@@ -1,7 +1,7 @@
 # A TypeScript compiler for ASP.NET Core
 
-[![Build status](https://ci.appveyor.com/api/projects/status/6mx0r3dvvje0h529?svg=true)](https://ci.appveyor.com/project/madskristensen/weboptimizer-markdown)
-[![NuGet](https://img.shields.io/nuget/v/LigerShark.WebOptimizer.Markdown.svg)](https://nuget.org/packages/LigerShark.WebOptimizer.Markdown/)
+[![Build status](https://ci.appveyor.com/api/projects/status/h7vn1gsn7139r74e?svg=true)](https://ci.appveyor.com/project/madskristensen/weboptimizer-typescript)
+[![NuGet](https://img.shields.io/nuget/v/LigerShark.WebOptimizer.TypeScript.svg)](https://nuget.org/packages/LigerShark.WebOptimizer.TypeScript/)
 
 This package compiles markdown files into HTML by hooking into the [LigerShark.WebOptimizer](https://github.com/ligershark/WebOptimizer) pipeline.
 
@@ -16,7 +16,7 @@ services.AddWebOptimizer(pipeline =>
 });
 ```
 
-Or if you just want to parse specific markdown files, do this:
+Or if you just want to parse specific TypeScript files, do this:
 
 ```c#
 services.AddWebOptimizer(pipeline =>
