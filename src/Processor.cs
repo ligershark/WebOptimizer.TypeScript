@@ -59,17 +59,20 @@ namespace WebOptimizer.TypeScript
 
         private bool EnsureNodeFiles()
         {
-            if (File.Exists(Path.Combine(WorkingDirectory, "node_modules", "typescript", "package.json")))
+            var packageFile = Path.Combine(WorkingDirectory, "node_modules", "typescript", "package.json");
+
+            if (File.Exists(packageFile))
             {
                 return true;
             }
 
             lock (_syncRoot)
             {
-                if (!Directory.Exists(WorkingDirectory))
+                if (!File.Exists(packageFile))
                 {
                     try
                     {
+                        Directory.Delete(WorkingDirectory, true);
                         var assembly = GetType().Assembly;
 
                         using (var resourceStream = assembly.GetManifestResourceStream("WebOptimizer.TypeScript.node_files.zip"))
@@ -80,7 +83,6 @@ namespace WebOptimizer.TypeScript
                     }
                     catch (Exception)
                     {
-                        Directory.Delete(WorkingDirectory, true);
                         return false;
                     }
                 }
