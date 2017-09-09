@@ -13,7 +13,8 @@ namespace Sample
             services.AddMemoryCache();
             services.AddWebOptimizer(pipeline =>
             {
-                pipeline.CompileTypeScriptFiles("**/*.ts", "**/*.js");
+                pipeline.CompileTypeScriptFiles();
+                pipeline.TranspileJavaScriptFiles();
             });
         }
 

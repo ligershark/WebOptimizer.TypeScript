@@ -7,19 +7,20 @@ namespace Microsoft.Extensions.DependencyInjection
     /// <summary>
     /// Extensions methods for registrating the Sass compiler on the Asset Pipeline.
     /// </summary>
-    public static class PipelineExtensions
+    public static class TypeScriptPipelineExtensions
     {
         /// <summary>
-        /// Compile markdown files on the asset pipeline.
+        /// Compile TypeScript files on the asset pipeline.
         /// </summary>
         public static IAsset CompileTypeScript(this IAsset asset)
         {
             asset.Processors.Add(new TypeScriptProcessor());
+            asset.Pipeline?.ServiceCollection?.AddNodeServices();
             return asset;
         }
 
         /// <summary>
-        /// Compile markdown files on the asset pipeline.
+        /// Compile TypeScript files on the asset pipeline.
         /// </summary>
         public static IEnumerable<IAsset> CompileTypeScript(this IEnumerable<IAsset> assets)
         {
@@ -34,6 +35,22 @@ namespace Microsoft.Extensions.DependencyInjection
         }
 
         /// <summary>
+        /// Compile ES6 and JSX files on the asset pipeline.
+        /// </summary>
+        public static IAsset TranspileJavaScript(this IAsset asset)
+        {
+            return asset.CompileTypeScript();
+        }
+
+        /// <summary>
+        /// Compile ES6 and JSX files on the asset pipeline.
+        /// </summary>
+        public static IEnumerable<IAsset> TranspileJavaScript(this IEnumerable<IAsset> assets)
+        {
+            return assets.CompileTypeScript();
+        }
+
+        /// <summary>
         /// Compile markdown files on the asset pipeline.
         /// </summary>
         /// <param name="pipeline">The asset pipeline.</param>
@@ -41,27 +58,28 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <param name="sourceFiles">The path to the markdown source files to compile.</param>
         public static IAsset AddTypeScriptBundle(this IAssetPipeline pipeline, string route, params string[] sourceFiles)
         {
-            pipeline.ServiceCollection.AddNodeServices();
+            pipeline.ServiceCollection.AddNodeServices(options =>
+            {
+                options.ProjectPath = TypeScriptProcessor.WorkingDirectory;
+            });
 
             return pipeline.AddBundle(route, "application/javascript; charset=UTF-8", sourceFiles)
                            .CompileTypeScript()
-                           .Concatenate();
+                           .Concatenate()
+                           .MinifyJavaScript();
         }
 
         /// <summary>
-        /// Compiles markdown files into HTML and makes them servable in the browser.
+        /// Compiles TypeScript files into HTML and makes them servable in the browser.
         /// </summary>
         /// <param name="pipeline">The asset pipeline.</param>
         public static IEnumerable<IAsset> CompileTypeScriptFiles(this IAssetPipeline pipeline)
         {
-            pipeline.ServiceCollection.AddNodeServices();
-
-            return pipeline.AddFiles("application/javascript; charset=UTF-8", "**/*.ts")
-                           .CompileTypeScript();
+            return pipeline.CompileTypeScriptFiles("**/*.ts", "**/*.tsx");
         }
 
         /// <summary>
-        /// Compiles the specified markdown files into HTML and makes them servable in the browser.
+        /// Compiles the specified TypeScript files into JavaScript (ES5) and makes them servable in the browser.
         /// </summary>
         /// <param name="pipeline">The pipeline object.</param>
         /// <param name="sourceFiles">A list of relative file names of the sources to compile.</param>
@@ -70,7 +88,27 @@ namespace Microsoft.Extensions.DependencyInjection
             pipeline.ServiceCollection.AddNodeServices();
 
             return pipeline.AddFiles("application/javascript; charset=UTF-8", sourceFiles)
-                           .CompileTypeScript();
+                           .CompileTypeScript()
+                           .MinifyJavaScript();
+        }
+
+        /// <summary>
+        /// Compiles TypeScript files into JavaScript (ES5) and makes them servable in the browser.
+        /// </summary>
+        /// <param name="pipeline">The asset pipeline.</param>
+        public static IEnumerable<IAsset> TranspileJavaScriptFiles(this IAssetPipeline pipeline)
+        {
+            return pipeline.CompileTypeScriptFiles("**/*.js", "**/*.jsx");
+        }
+
+        /// <summary>
+        /// Compiles the specified TypeScript files into JavaScript (ES5) and makes them servable in the browser.
+        /// </summary>
+        /// <param name="pipeline">The pipeline object.</param>
+        /// <param name="sourceFiles">A list of relative file names of the sources to compile.</param>
+        public static IEnumerable<IAsset> TranspileJavaScriptFiles(this IAssetPipeline pipeline, params string[] sourceFiles)
+        {
+            return pipeline.CompileTypeScriptFiles(sourceFiles);
         }
     }
 }

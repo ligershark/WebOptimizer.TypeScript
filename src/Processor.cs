@@ -10,9 +10,9 @@ using System.Threading.Tasks;
 namespace WebOptimizer.TypeScript
 {
     /// <summary>
-    /// Compiles Sass files
+    /// Compiles TypeScript/ES6 files
     /// </summary>
-    /// <seealso cref="WebOptimizer.IProcessor" />
+    /// <seealso cref="IProcessor" />
     public class TypeScriptProcessor : IProcessor
     {
         private static object _syncRoot = new object();
@@ -26,9 +26,7 @@ namespace WebOptimizer.TypeScript
         /// <summary>
         /// Gets the directory of the node modules.
         /// </summary>
-        public static string WorkingDirectory
-            => Path.Combine(Path.GetTempPath(), _name);
-
+        public static string WorkingDirectory { get; } = Path.Combine(Path.GetTempPath(), "WebOptimizer.TypeScript");
 
         /// <summary>
         /// Executes the processor on the specified configuration.
