@@ -17,13 +17,6 @@ namespace WebOptimizer.TypeScript.Test
         [Fact]
         public async Task Compile_Success()
         {
-            var services = new ServiceCollection();
-            services.AddNodeServices(options => {
-                options.ProjectPath = TypeScriptProcessor.WorkingDirectory;
-            });
-            var serviceProvider = services.BuildServiceProvider();
-            var nodeServices = serviceProvider.GetRequiredService<INodeServices>();
-
             var processor = new TypeScriptProcessor();
             var pipeline = new Mock<IAssetPipeline>().SetupAllProperties();
             var context = new Mock<IAssetContext>().SetupAllProperties();
@@ -40,9 +33,6 @@ namespace WebOptimizer.TypeScript.Test
             context.Object.Content = new Dictionary<string, byte[]> {
                 { "/file.md", "const i = 1;".AsByteArray() },
             };
-
-            context.Setup(s => s.HttpContext.RequestServices.GetService(typeof(INodeServices)))
-                   .Returns(nodeServices);
 
             context.Setup(s => s.HttpContext.RequestServices.GetService(typeof(IHostingEnvironment)))
                   .Returns(env.Object);

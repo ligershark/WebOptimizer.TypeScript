@@ -58,11 +58,6 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <param name="sourceFiles">The path to the markdown source files to compile.</param>
         public static IAsset AddTypeScriptBundle(this IAssetPipeline pipeline, string route, params string[] sourceFiles)
         {
-            pipeline.ServiceCollection.AddNodeServices(options =>
-            {
-                options.ProjectPath = TypeScriptProcessor.WorkingDirectory;
-            });
-
             return pipeline.AddBundle(route, "application/javascript; charset=UTF-8", sourceFiles)
                            .CompileTypeScript()
                            .Concatenate()
@@ -85,8 +80,6 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <param name="sourceFiles">A list of relative file names of the sources to compile.</param>
         public static IEnumerable<IAsset> CompileTypeScriptFiles(this IAssetPipeline pipeline, params string[] sourceFiles)
         {
-            pipeline.ServiceCollection.AddNodeServices();
-
             return pipeline.AddFiles("application/javascript; charset=UTF-8", sourceFiles)
                            .CompileTypeScript()
                            .MinifyJavaScript();
