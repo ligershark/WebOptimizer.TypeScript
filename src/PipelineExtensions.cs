@@ -5,7 +5,7 @@ using WebOptimizer.TypeScript;
 namespace Microsoft.Extensions.DependencyInjection
 {
     /// <summary>
-    /// Extensions methods for registrating the Sass compiler on the Asset Pipeline.
+    /// Extensions methods for registrating the TypeScript compiler on the Asset Pipeline.
     /// </summary>
     public static class TypeScriptPipelineExtensions
     {
@@ -15,7 +15,6 @@ namespace Microsoft.Extensions.DependencyInjection
         public static IAsset CompileTypeScript(this IAsset asset)
         {
             asset.Processors.Add(new TypeScriptProcessor());
-            asset.Pipeline?.ServiceCollection?.AddNodeServices();
             return asset;
         }
 
