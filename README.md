@@ -12,7 +12,7 @@ You can reference any TypeScript file directly in the browser and a compiled ES5
 ```c#
 services.AddWebOptimizer(pipeline =>
 {
-    pipeline.CompileTypeScirptFiles();
+    pipeline.CompileTypeScriptFiles();
 });
 ```
 
